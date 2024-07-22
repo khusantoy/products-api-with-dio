@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:products_api_with_dio/data/models/product.dart';
 
 class DioClient {
   final _dio = Dio();
@@ -44,12 +43,38 @@ class DioClient {
       "title": title,
       "price": price,
       "description": description,
-      "category_id": categoryId,
+      "categoryId": categoryId,
       "images": images,
     };
 
+
     try {
       final response = await _dio.post("/products/", data: data);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Response> editProduct({
+    required int id,
+    required String title,
+    required int price,
+    required String description,
+    required int categoryId,
+    required List<String> images,
+  }) async {
+    final data = {
+      "title": title,
+      "price": price,
+      "description": description,
+      "categoryId": categoryId,
+      "images": images,
+    };
+
+
+    try {
+      final response = await _dio.put("/products/$id", data: data);
       return response;
     } catch (e) {
       rethrow;

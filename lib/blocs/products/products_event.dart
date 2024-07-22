@@ -15,6 +15,24 @@ final class AddProductEvent extends ProductsEvent {
       this.title, this.price, this.description, this.categoryId, this.images);
 }
 
+final class EditProductEvent extends ProductsEvent {
+  final int id;
+  final String title;
+  final int price;
+  final String description;
+  final int categoryId;
+  final List<String> images;
+
+  EditProductEvent(
+    this.id,
+    this.title,
+    this.price,
+    this.description,
+    this.categoryId,
+    this.images,
+  );
+}
+
 final class DeleteProductEvent extends ProductsEvent {
   final int id;
 

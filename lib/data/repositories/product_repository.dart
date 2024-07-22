@@ -28,6 +28,25 @@ class ProductRepository {
     return response;
   }
 
+  Future<Product> editProduct({
+    required int id,
+    required String title,
+    required int price,
+    required String description,
+    required int categoryId,
+    required List<String> images,
+  }) async {
+    final response = await _dioProductsServices.editProduct(
+        id: id,
+        title: title,
+        price: price,
+        description: description,
+        categoryId: categoryId,
+        images: images);
+
+    return response;
+  }
+
   Future<void> deleteProduct({required int id}) async {
     return await _dioProductsServices.deleteProduct(id: id);
   }

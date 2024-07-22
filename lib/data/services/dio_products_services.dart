@@ -12,7 +12,6 @@ class DioProductsServices {
       List<Product> products = [];
 
       for (var productData in response.data) {
-        print(productData['images'][0]);
         products.add(Product.fromMap(productData));
       }
       return products;
@@ -34,6 +33,30 @@ class DioProductsServices {
   }) async {
     try {
       final response = await _dioClient.addProduct(
+          title: title,
+          price: price,
+          description: description,
+          categoryId: categoryId,
+          images: images);
+
+      return Product.fromMap(response.data);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<Product> editProduct({
+    required int id,
+    required String title,
+    required int price,
+    required String description,
+    required int categoryId,
+    required List<String> images,
+  }) async {
+    try {
+      final response = await _dioClient.editProduct(
+          id: id,
           title: title,
           price: price,
           description: description,

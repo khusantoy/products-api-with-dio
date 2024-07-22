@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:products_api_with_dio/blocs/products/products_bloc.dart';
 import 'package:products_api_with_dio/data/models/product.dart';
+import 'package:products_api_with_dio/ui/screens/manage_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,12 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Products List"),
         backgroundColor: Colors.amber,
         actions: [
-          IconButton(
-            onPressed: () {
-              context.read<ProductsBloc>().add(
-                  AddProductEvent("Sichqoncha", 2, "Salom", 1, ['image1 url']));
-            },
-            icon: const Icon(Icons.add),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ManageScreen(),
+                  ),
+                );
+              },
+              child: const Text("Add"),
+            ),
           )
         ],
       ),
@@ -85,7 +96,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                   CircleAvatar(
                                     backgroundColor: Colors.amber,
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return ManageScreen(
+                                                title: product.title,
+                                                price: product.price,
+                                                description:
+                                                    product.description,
+                                                images: product.images,
+                                                productId: product.id,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
                                       icon: const Icon(
                                         Icons.edit,
                                         color: Colors.white,

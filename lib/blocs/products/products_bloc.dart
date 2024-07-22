@@ -15,6 +15,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     on<GetProductsEvent>(_getProducts);
     on<DeleteProductEvent>(_deleteProduct);
     on<AddProductEvent>(_addProduct);
+    on<EditProductEvent>(_editProduct);
   }
 
   void _getProducts(GetProductsEvent event, Emitter<ProductsState> emit) async {
@@ -46,6 +47,39 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
           images: event.images);
 
       existingProducts.add(product);
+      emit(LoadedProductsState(existingProducts));
+    } catch (e) {
+      emit(ErrorProductsState(e.toString()));
+    }
+  }
+
+  void _editProduct(EditProductEvent event, Emitter<ProductsState> emit) async {
+    List<Product> existingProducts = [];
+
+    if (state is LoadedProductsState) {
+      existingProducts = (state as LoadedProductsState).products;
+    }
+
+    emit(LoadingProductsState());
+
+    try {
+      final product = await _productRepository.editProduct(
+          id: event.id,
+          title: event.title,
+          price: event.price,
+          description: event.description,
+          categoryId: event.categoryId,
+          images: event.images);
+
+      for (var product in existingProducts) {
+        if (product.id == event.id) {
+          product.title = event.title;
+          product.price = event.price;
+          product.description = event.description;
+          product.category.id = event.categoryId;
+          product.images = event.images;
+        }
+      }
       emit(LoadedProductsState(existingProducts));
     } catch (e) {
       emit(ErrorProductsState(e.toString()));
